@@ -1,0 +1,1 @@
+{"name": "AX300 Vessel Application Assessment", "short_name": "AX300 Assess", "start_url": "./", "scope": "./", "display": "standalone", "background_color": "#111a1f", "theme_color": "#3d3935", "icons": [{"src": "./icon-192.png", "sizes": "192x192", "type": "image/png"}, {"src": "./icon-512.png", "sizes": "512x512", "type": "image/png"}]}

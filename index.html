@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="AX300 Assess">
+<meta name="theme-color" content="#3d3935">
+<link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+<link rel="manifest" href="./manifest.webmanifest">
+<title>AX300 Application Assessment</title>
+<style>
+:root{--bg:#111a1f;--card:#1b2730;--line:#2a3b46;--tx:#e8eef1;--mut:#8fa1ab;--red:#b02530;--go:#2e9e5b;--cau:#d9a21b;--no:#c8323c;--chip:#223340}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.4 -apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-text-size-adjust:100%}
+body{padding-bottom:env(safe-area-inset-bottom,0)}
+header{background:#3d3935;border-bottom:4px solid var(--red);padding:calc(env(safe-area-inset-top,0px) + 14px) 18px 12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fff}
+header small{display:block;font-weight:400;color:#cfc8c0;letter-spacing:.04em;font-size:12px;text-transform:none}
+main{padding:16px 18px 40px;max-width:720px;margin:auto}
+h1{margin:6px 0 4px;font-size:28px;font-weight:300;text-transform:uppercase;line-height:1.1}h1 b{display:block;font-weight:800}
+p.sub{color:var(--mut);margin:0 0 14px;font-size:14px}
+nav{display:flex;gap:6px;margin:12px 0 14px;overflow-x:auto}
+nav button{flex:1 0 auto;padding:12px 10px}
+button{font:inherit;font-weight:700;letter-spacing:.05em;text-transform:uppercase;font-size:13px;background:var(--card);color:var(--tx);border:1px solid var(--line);border-radius:8px;padding:12px 14px;cursor:pointer}
+button.on,button.red{background:var(--red);border-color:var(--red);color:#fff}
+label{display:block;color:var(--mut);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin:0 0 4px}
+input,select{width:100%;font:inherit;font-size:17px;background:var(--card);color:var(--tx);border:1px solid var(--line);border-radius:8px;padding:11px 12px;min-height:46px}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;margin-bottom:12px}.g .w{grid-column:1/-1}
+h3{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin:18px 0 8px;border-top:1px solid var(--line);padding-top:12px}
+.card{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--mut);border-radius:10px;padding:12px 14px;margin:10px 0}
+.card.GO{border-left-color:var(--go)}.card.CAUTION,.card.REVIEW{border-left-color:var(--cau)}.card.NO,.card.SEVERE{border-left-color:var(--no)}
+.card h4{margin:0 0 6px;font-size:16px}
+.chip{display:inline-block;background:var(--chip);border-radius:6px;padding:3px 8px;font-size:13px;margin:0 6px 6px 0;font-family:ui-monospace,Menlo,monospace}
+.badge{display:inline-block;border-radius:6px;padding:3px 9px;font-size:12px;font-weight:800;letter-spacing:.06em;color:#fff;background:#556}
+.badge.GO{background:var(--go)}.badge.CAUTION,.badge.REVIEW{background:var(--cau);color:#111}.badge.NO,.badge.SEVERE{background:var(--no)}
+.ban{border-radius:10px;padding:14px;margin:6px 0 4px;background:var(--card);border:1px solid var(--line);border-left:8px solid var(--mut)}
+.ban b{font-size:19px;display:block}.ban.GO{border-left-color:var(--go)}.ban.REVIEW{border-left-color:var(--cau)}.ban.NO{border-left-color:var(--no)}
+.mut{color:var(--mut);font-size:13px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}th{color:var(--mut);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+tr.pick td{background:#2a1c21}
+.kvs{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px}.kv{display:flex;flex-direction:column;border-bottom:1px solid var(--line);padding:3px 0}.kv span{color:var(--mut);font-size:11px;letter-spacing:.08em;text-transform:uppercase}.kv b{font-weight:600;word-break:break-word}
+.notes p{margin:6px 0}
+.app-brand{display:block;width:132px;height:auto;margin-bottom:8px}.report-brand{background:#fff;border-radius:8px;padding:12px 15px;margin:10px 0}.report-mark{display:block;width:132px;height:auto}
+.photo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.photo-grid figure{margin:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;break-inside:avoid}.photo-grid img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:contain;background:var(--card)}.photo-grid figcaption{padding:8px;font-size:13px}.photo-grid button{display:block;margin-top:6px}
+@media print{
+ .report-brand{padding:0 0 10px;margin:0;break-after:avoid}.tw{overflow:visible}table{font-size:10px}th,td{white-space:normal;padding:4px}
+ :root{--bg:#fff;--card:#fff;--tx:#000;--mut:#555;--line:#bbb;--chip:#eee}
+ header,nav,.noprint,h1,p.sub{display:none!important}
+ main{padding:0;max-width:none}.card,.ban,.kv{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<header><img class="app-brand" alt="Caudwell Marine" src="data:image/png;base64,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"><small>AX300 Application Assessment &middot; Rev A-1 maths &middot; Beta 0.4</small></header>
+<main>
+<h1>AX300 Vessel<b>Application Assessment</b></h1>
+<p class="sub">Screening estimate only. Confirm speed and loaded RPM by sea trial.</p>
+<nav id="nav"></nav>
+<div id="view"></div>
+</main>
+<script>
+// ---- Constants and reference data (workbook Tabs 5 and 7) ----
+var K={kn2pitch:1215.223097112,lb:2.204622622};
+var DEF={hp:294,ratio:1.761,rpm:4000,maxDia:16,limit:7000,rpmMin:3800,rpmMax:4000,caution:0.9,severe:1.25,reserve:0.1,cruiseLoad:0.7,bsfc:230,fuelEng:62,cruSpd:0.82,cruFuel:0.68};
+var REFF=[["AX300 prop power per engine","hp","hp"],["Gear ratio","ratio","engine:prop"],["Rated loaded WOT RPM","rpm","rpm"],["Max propeller diameter","maxDia","in"],["Max vessel load per engine","limit","kg"],["Min acceptable WOT RPM","rpmMin","rpm"],["Max acceptable WOT RPM","rpmMax","rpm"],["Caution threshold","caution","x limit"],["Severe threshold","severe","x limit"],["Fuel reserve","reserve","fraction"],["Cruise engine load","cruiseLoad","fraction"],["AX300 planning BSFC","bsfc","g/kWh"],["Max fuel per engine (report)","fuelEng","L/h"],["Cruise speed factor (report)","cruSpd","x top"],["Cruise fuel factor (report)","cruFuel","x full"]];
+var DENS=[["TF - Tropical Fresh",996],["F - Freshwater",1000],["T - Tropical Salt",1020],["S - Summer Salt",1025],["W - Winter Salt",1028],["WNA - Winter North Atlantic",1029]];
+var ENG=[["Mercury Verado 300 V8 - 1.75","Gasoline",272,1.75,300],["Mercury Verado 300 V8 - 1.85","Gasoline",272,1.85,300],["Yamaha F300 - 25 in","Gasoline",250,1.75,300],["Yamaha F300 - 30 in","Gasoline",254,1.75,300],["Yamaha F300 - 35 in","Gasoline",265,1.75,300],["Honda M300 - 20 in","Gasoline",276,2,300],["Honda M300 - 25 in","Gasoline",282,2,300],["Honda M300 - 30 in","Gasoline",286,2,300],["Suzuki DF300AP - X","Gasoline",290,2.08,300],["Suzuki DF300AP - XX","Gasoline",299,2.08,300],["Cox CXO300 - 1.46","Diesel",393,1.46,260],["OXE300","Diesel",395,1.46,230],["Caudwell AX300 XL","Diesel",480,1.761,230],["Caudwell AX300 XXL","Diesel",490,1.761,230]];
+var PAIRS=[[18,"Solas B3",16,14.375],[18,"Polastorm",16,14.375],[18,"Hill Marine",null,null],[19,"Bravo Three standard",16,14.4],[20,"Solas B3",16,14.375],[20,"Polastorm",16,14.375],[20,"Hill Marine",null,null],[20,"Bravo Three",16,14.4],[20,"Bravo Three XR",16,15],[21,"Solas B3",16,14.375],[21,"Bravo Three",15.9,14.3],[21,"Bravo Three Diesel",16,15],[21,"Bravo Three XR",16,15],[21.5,"Bravo Three XR",16,15],[22,"Solas B3",15.75,14.25],[22,"Polastorm",15.75,14.25],[22,"Hill Marine",null,null],[22,"Bravo Three XR",16,15],[22.5,"Bravo Three",15.8,14.3],[23,"Solas B3",15.75,14.25],[23,"Bravo Three Diesel",16,15],[23,"Bravo Three XR",16,15],[23.5,"Bravo Three XR",16,15],[24,"Solas B3",15.5,14],[24,"Polastorm",15.5,14],[24,"Hill Marine",null,null],[24,"Bravo Three",15.5,14],[24,"Bravo Three XR",16,15],[25,"Solas B3",15.5,14],[25,"Bravo Three Diesel",15.8,14.8],[25,"Bravo Three XR",15.8,14.8],[26,"Solas B3",15.5,14],[26,"Polastorm",15.5,14],[26,"Hill Marine",null,null],[26,"Bravo Three",15.3,13.8],[26,"Bravo Three XR",15.8,14.8],[27,"Solas B3",15.5,14],[27,"Bravo Three Diesel",15.5,14.5],[27,"Bravo Three XR",15.5,14.5],[27.5,"Bravo Three XR",15.5,14.5],[28,"Solas B3",15,13.75],[28,"Hill Marine",null,null],[28,"Bravo Three",15,13.5],[28,"Bravo Three XR",15.5,14.5]];
+var SERIES=["All reference pairs"].concat(PAIRS.map(function(p){return p[1]}).filter(function(v,i,a){return a.indexOf(v)===i}));
+var REGS=["Planing","Semi-displacement","Displacement"];
+
+// ---- Inputs. Field: [label,key,type(t|s),fullWidth,options,visible(s)] ----
+var FIELDS=[["#","Vessel"],["Application type","application","s",1,["New Build","Repower"]],["Vessel","name","t",1],["Customer","company","t"],["Location","location","t"],["Prepared by","prep","t"],["Vessel use","use","t"],
+["#","Hull and environment"],["Hull type","hullForm","s",0,["Monohull","Multihull"]],["Running regime","regime","s",0,REGS],["Length overall (m)","loa"],["Beam (m)","beam"],["Water density case","dens","s",1,DENS.map(function(d){return d[0]})],
+["#","Propulsion"],["AX300 engines","engines"],["Leg length","leg","s",0,["XL","XXL"]],["Assumed slip %","slip"],["Prop series","series","s",0,SERIES],
+["#","Speed model"],["Planing C","C",0,0,0,function(s){return s.regime==="Planing"}],["Reference speed (kn)","refKn",0,0,0,function(s){return s.regime!=="Planing"}],["Reference hp (total)","refHp",0,0,0,function(s){return s.regime!=="Planing"}],["Reference mass (kg)","refKg",0,0,0,function(s){return s.regime!=="Planing"}],["Exponent a (power)","expA",0,0,0,function(s){return s.regime==="Semi-displacement"}],["Exponent b (mass)","expB",0,0,0,function(s){return s.regime==="Semi-displacement"}],
+["#","Targets and loads"],["Minimum speed (kn)","minKn"],["Desired top speed (kn)","topKn"],["Desired cruise (kn)","cruKn"],["Hull design speed (kn, optional)","designKn"],["Persons onboard","persons"],["Min operating kg","mMin"],["Normal operating kg","mNorm"],["Full load kg","mFull"],["Fuel capacity (L)","fuelCap"],
+["#","Installation"],["Helms","helms"],["Docking stations","dock"],["Main harness length","harness","t"],["Outboard connection lengths","conn","t"],["Colour","colour","t"],["Modification required","mods","t",1]];
+var BLANK={application:"New Build",hullForm:"Monohull",regime:"Planing",dens:"S - Summer Salt",leg:"XL",series:"All reference pairs"};
+var SAMPLE={application:"Repower",name:"Sample vessel (test data)",company:"Sample customer",location:"Sample location",prep:"",use:"Recreational fishing",hullForm:"Monohull",regime:"Planing",loa:9.144,beam:2.46,dens:"S - Summer Salt",engines:2,leg:"XL",slip:12,series:"All reference pairs",C:194,minKn:35,topKn:45,cruKn:35,persons:6,mNorm:5610,mFull:8873,fuelCap:989,helms:1,dock:0};
+var T={rpm:"",dist:"",out:"",back:"",pitch:""};
+function load(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v||JSON.parse(JSON.stringify(d))}catch(e){return JSON.parse(JSON.stringify(d))}}
+var _st;function saveSoon(){clearTimeout(_st);_st=setTimeout(function(){save("ax300.cur",S)},400)}
+window.addEventListener("pagehide",function(){save("ax300.cur",S)});
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}
+function restoreAssessment(s){return Object.assign({},BLANK,Object.keys(s).length?{application:"Repower"}:{},s)}
+var S=restoreAssessment(load("ax300.cur",{})),R=Object.assign({},DEF,load("ax300.ref",{})),tab=(location.hash||"#assess").slice(1);
+function n(x){var v=parseFloat(String(x).replace(",","."));return isFinite(v)?v:NaN}
+function f(x,d){return isFinite(x)?x.toFixed(d==null?1:d):"–"}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+
+// ---- Calculations (workbook Tabs 1, 3, 5, 9 and Report) ----
+function roundPitch(x){var fr=Math.round((x%1)*1e6)/1e6;return Math.floor(x)+(fr<=0.3?0:fr<0.8?0.5:1)}
+function eligible(s){return PAIRS.filter(function(p){return(s.series==="All reference pairs"||p[1]===s.series)&&p[2]&&p[3]&&Math.max(p[2],p[3])<=R.maxDia})}
+function expo(s){return s.regime==="Displacement"?[1/3,2/9]:[n(s.expA),n(s.expB)]}
+function spd(s,m,hpT){
+ if(s.regime==="Planing"){var C=n(s.C);return C>0?C*Math.sqrt(hpT/(m*K.lb)):NaN}
+ var e=expo(s),rk=n(s.refKn),rh=n(s.refHp),rm=n(s.refKg);
+ return(rk>0&&rh>0&&rm>0&&e[0]>0&&e[1]>0)?rk*Math.pow(hpT/rh,e[0])*Math.pow(rm/m,e[1]):NaN}
+function maxMass(s,hpT){var mk=n(s.minKn);if(!(mk>0))return NaN;
+ if(s.regime==="Planing"){var C=n(s.C);return C>0?hpT*Math.pow(C/mk,2)/K.lb:NaN}
+ var e=expo(s),rk=n(s.refKn),rh=n(s.refHp),rm=n(s.refKg);
+ return(rk>0&&rh>0&&rm>0&&e[0]>0&&e[1]>0)?rm*Math.pow(rk*Math.pow(hpT/rh,e[0])/mk,1/e[1]):NaN}
+function calc(s){
+ var E=n(s.engines),slip=n(s.slip)/100,lim=R.limit,minKn=n(s.minKn),top=n(s.topKn);
+ var hpT=E*R.hp,shaft=R.rpm/R.ratio,el=eligible(s),ok=E>0&&slip>=0&&slip<1;
+ var r={ok:ok,hpT:hpT,shaft:shaft,el:el,cases:[]};
+ [["Minimum operating",s.mMin],["Normal operating",s.mNorm],["Full load",s.mFull]].forEach(function(c,i){
+  var m=n(c[1]),o={name:c[0],m:m,per:m/E,kn:NaN,req:NaN,cand:NaN,st:"MASS REQUIRED",cls:"REVIEW",ls:"",lcl:""};
+  if(m>0&&ok){
+   var q=(m/E)/lim;o.lcl=q<=R.caution?"GO":q<=1?"CAUTION":q<=R.severe?"NO":"SEVERE";o.ls=o.lcl==="NO"?"NO-GO":o.lcl;
+   if(q<=1)o.kn=spd(s,m,hpT);
+   var v=i===1?top:o.kn;if(v>0)o.req=v*K.kn2pitch/(shaft*(1-slip));
+   if(o.req>0){var rp=roundPitch(o.req),c2=el.filter(function(p){return p[0]>=rp}).map(function(p){return p[0]});if(c2.length)o.cand=Math.min.apply(null,c2)}
+   if(q>1){o.st="NOT A FIT: LOAD LIMIT";o.cls="NO"}
+   else if(!isFinite(o.kn)){o.st="CHECK BASELINE / REGIME";o.cls="REVIEW"}
+   else if(minKn>0&&o.kn<minKn){o.st="ESTIMATED SPEED SHORTFALL";o.cls="NO"}
+   else if(!(o.cand>0)){o.st="NO LISTED CANDIDATE";o.cls="NO"}
+   else{o.st="DESIGN ESTIMATE: TRIAL REQUIRED";o.cls="GO"}
+  }
+  r.cases.push(o)});
+ var mp=el.length?Math.max.apply(null,el.map(function(p){return p[0]})):NaN,nm=r.cases[1],fl=r.cases[2];
+ r.maxPitch=mp;r.mpSpeed=(ok&&mp>0&&nm.m>0&&nm.per<=lim)?shaft*mp*(1-slip)/K.kn2pitch:NaN;
+ var over=r.cases.some(function(c){return c.m>0&&c.per>lim}),short=false;
+ if(minKn>0)[nm.kn,fl.kn,r.mpSpeed].forEach(function(x){if(isFinite(x)&&x<minKn)short=true});
+ if(!ok||!(nm.m>0)||!(minKn>0)||!(top>0)||(!over&&!isFinite(nm.kn))){r.dec="REVIEW - INPUTS INCOMPLETE";r.cls="REVIEW";r.next="Check engine count, assumed slip, normal operating weight, minimum and desired speeds, and the inputs for the selected speed model."}
+ else if(over){r.dec="NO-GO - LOAD LIMIT";r.cls="NO";r.next="Entered load exceeds the "+lim.toLocaleString()+" kg/engine limit."}
+ else if(short){r.dec="NO-GO - HULL SPEED SHORTFALL";r.cls="NO";
+  var w=(isFinite(fl.kn)&&fl.kn<minKn)?["Full-load",fl.kn]:(isFinite(nm.kn)&&nm.kn<minKn)?["Normal-load",nm.kn]:["Max-pitch",r.mpSpeed];
+  r.next=w[0]+" estimate: "+f(w[1])+" kn vs. "+f(minKn)+" kn minimum; "+f(minKn-w[1])+" kn short."}
+ else if(!(nm.cand>0)){r.dec="NO-GO - NO LISTED PAIR";r.cls="NO";r.next="Review pitch range, series and clearance."}
+ else{r.dec="GO - TRIAL REQUIRED";r.cls="GO";r.next="Design estimate only. Record reciprocal runs and loaded WOT RPM."}
+ return r}
+function fuel(s,r){var E=n(s.engines),t=r.cases[1].kn,full=E*R.fuelEng,cs=t*R.cruSpd,cf=full*R.cruFuel,
+ burn=E*R.hp*0.745699872*R.cruiseLoad*R.bsfc/1000/0.84,end=n(s.fuelCap)*(1-R.reserve)/burn;
+ return{full:full,fm:full/t,cs:cs,cf:cf,cm:cf/cs,burn:burn,end:end,rng:end*n(s.cruKn)}}
+function bcls(r){return r.cls==="GO"?"GO":r.cls==="NO"?"NO":"REVIEW"}
+
+// ---- UI ----
+var TABS=[["assess","Assess"],["photos","Photos"],["props","Props"],["trial","Trial"],["report","Report"],["ref","Ref"],["saved","Saved"]];
+function nav(){document.getElementById("nav").innerHTML=TABS.map(function(t){return'<button class="'+(t[0]===tab?"on":"")+'" data-t="'+t[0]+'">'+t[1]+"</button>"}).join("")}
+document.getElementById("nav").onclick=function(e){var t=e.target.dataset.t;if(t){tab=t;location.hash=t;draw()}};
+window.onhashchange=function(){var h=location.hash.slice(1);if(TABS.some(function(t){return t[0]===h})&&h!==tab){tab=h;draw()}};
+function draw(){nav();var v=document.getElementById("view");v.oninput=v.onclick=null;({assess:assess,photos:photos,props:props,trial:trial,report:report,ref:ref,saved:saved}[tab]||assess)(v)}
+function badge(c,t){return'<span class="badge '+c+'">'+esc(t)+"</span>"}
+
+function assess(v){
+ var h='<div class="row"><button class="red" id="cl">New assessment</button><button id="sm">Load sample</button></div><p class="mut">For a new vessel, start a new assessment and enter its actual loads and speed requirements.</p><div id="res"></div>',open=false;
+ FIELDS.forEach(function(d){
+  if(d[0]==="#"){h+=(open?"</div>":"")+"<h3>"+d[1]+'</h3><div class="g">';open=true;return}
+  if(d[5]&&!d[5](S))return;
+  var id=d[1],inp;
+  if(d[2]==="s")inp='<select data-k="'+id+'">'+d[4].map(function(o){return"<option"+(o===S[id]?" selected":"")+">"+esc(o)+"</option>"}).join("")+"</select>";
+  else inp='<input data-k="'+id+'" type="text"'+(d[2]==="t"?"":' inputmode="decimal"')+' value="'+esc(S[id])+'" autocomplete="off">';
+  h+="<div"+(d[3]?' class="w"':"")+"><label>"+d[0]+"</label>"+inp+"</div>"});
+ h+='</div><div class="row"><button class="red" id="sv">Save assessment</button><button id="vp">Vessel photos</button><button id="rp">Create report</button></div><p class="mut">Starts blank. AX300 constants (hp, ratio, RPM, limits) come from the Ref tab. Sample data is APB 2 - WyWy, for checking only.</p>';
+ v.innerHTML=h;
+ v.oninput=function(e){var k=e.target.dataset.k;if(k){S[k]=e.target.value;if(k==="regime"){save("ax300.cur",S);assess(v)}else{saveSoon();res()}}};
+ document.getElementById("sv").onclick=function(){var L=load("ax300.log",[]);L.unshift({t:new Date().toISOString(),s:JSON.parse(JSON.stringify(S)),dec:calc(S).dec});alert(save("ax300.log",L)?"Saved on this phone.":"Could not save. Phone storage may be full; remove unused photos or assessments and try again.")};
+ document.getElementById("vp").onclick=function(){tab="photos";location.hash="photos";draw()};
+ document.getElementById("rp").onclick=function(){tab="report";location.hash="report";draw()};
+ document.getElementById("sm").onclick=function(){if(S.name&&!confirm("Replace the current inputs with the sample?"))return;S=Object.assign({},BLANK,SAMPLE);save("ax300.cur",S);assess(v)};
+ document.getElementById("cl").onclick=function(){if(confirm("Start a new assessment and clear this draft and its photos? Saved assessments will stay.")){S=Object.assign({},BLANK);T={rpm:"",dist:"",out:"",back:"",pitch:""};save("ax300.cur",S);assess(v)}};
+ res()}
+function crouchTargets(s){
+ if(s.regime!=="Planing")return "";
+ var kg=n(s.mNorm), e=n(s.engines), hp=e*n(R.hp);
+ if(!(kg>0&&hp>0&&Number.isInteger(e)))return '<h3>Crouch target calculator</h3><p class="mut">Enter normal operating weight and engine count to calculate the required C.</p>';
+ var factor=Math.sqrt(kg*2.204622622/hp), min=n(s.minKn), top=n(s.topKn), loa=n(s.loa), beam=n(s.beam);
+ return '<h3>Crouch target calculator · normal load</h3><div class="card"><p>Required C for desired top speed: <b>'+ (top>0?f(top*factor,1):"Enter desired top speed")+'</b><br>Required C for minimum speed: <b>'+(min>0?f(min*factor,1):"Enter minimum speed")+'</b><br>Assumed Planing C: <b>'+(n(s.C)>0?f(n(s.C),1):"Not entered")+'</b></p><p class="mut">'+f(kg,0)+' kg · '+f(hp,0)+' total shaft hp'+(loa>0&&beam>0?' · LOA/beam '+f(loa/beam,2):'')+'. Length and beam are recorded for comparison; they do not enter the Crouch equation. Required C is a target threshold, not a hull calibration.</p></div>';
+}
+function res(){
+ var r=calc(S),el=document.getElementById("res");if(!el)return;
+ var h='<div class="ban '+bcls(r)+'"><span class="mut">OVERALL DECISION</span><b>'+esc(r.dec)+'</b><span class="mut">'+esc(r.next)+"</span></div>";
+ h+=crouchTargets(S);
+ if(r.ok)h+='<span class="chip">Total '+f(r.hpT,0)+' hp</span><span class="chip">Prop shaft '+f(r.shaft,0)+' rpm</span><span class="chip">'+r.el.length+" pairs fit</span>";
+ r.cases.forEach(function(c){
+  h+='<div class="card '+bcls(c)+'"><h4>'+c.name+" "+(c.m>0&&c.ls?badge(c.lcl,c.ls):"")+"</h4>";
+  if(c.m>0)h+='<span class="chip">'+c.m.toLocaleString()+' kg</span><span class="chip">'+f(c.per,0)+' kg/engine</span><span class="chip">'+f(c.kn)+' kn</span><span class="chip">req '+f(c.req,2)+' in</span><span class="chip">candidate '+(c.cand>0?c.cand+" in":"–")+"</span><br>";
+  h+='<span class="mut">'+esc(c.st)+"</span></div>"});
+ el.innerHTML=h}
+
+function props(v){
+ var r=calc(S),nm=r.cases[1],req=nm.req,rp=req>0?roundPitch(req):NaN;
+ var h='<h3>Required pitch (normal load)</h3><div class="card"><span class="chip">target '+f(n(S.topKn))+' kn</span><span class="chip">required '+f(req,2)+' in</span><span class="chip">rounded '+f(rp,1)+' in</span><span class="chip">pick '+(nm.cand>0?nm.cand+" in":"–")+'</span><p class="mut">Rule: x.00–x.30 rounds to x.0; above x.30 to below x.80 rounds to x.5; x.80–x.99 rounds up. The smallest listed pitch at or above that is selected.</p></div>';
+ h+='<h3>Reference pairs ('+r.el.length+' fit '+f(R.maxDia,0)+' in max)</h3><div class="tw"><table><tr><th>Pitch</th><th>Series</th><th>Fwd / Rear dia</th><th>Zero-slip kn</th><th>At slip kn</th></tr>';
+ var sl=n(S.slip)/100;
+ PAIRS.forEach(function(p){
+  if(S.series!=="All reference pairs"&&p[1]!==S.series)return;
+  var z=r.shaft*p[0]/K.kn2pitch;
+  h+='<tr'+(r.el.indexOf(p)>=0&&p[0]===nm.cand?' class="pick"':"")+"><td>"+p[0]+"</td><td>"+p[1]+"</td><td>"+(p[2]?p[2]+" / "+p[3]:"no dia data")+"</td><td>"+f(z)+"</td><td>"+f(z*(1-sl))+"</td></tr>"});
+ v.innerHTML=h+'</table></div><p class="mut">Catalogue screening does not establish AX300 fit, loaded RPM or torque absorption. Pairs without diameter data are excluded.</p>'}
+
+function trial(v){
+ var fl=[["WOT RPM","rpm"],["Run distance (nm, each leg)","dist"],["Out time (s)","out"],["Back time (s)","back"],["Nominal pitch (in)","pitch"]];
+ v.innerHTML='<h3>Reciprocal run</h3><div class="g">'+fl.map(function(d){return"<div><label>"+d[0]+'</label><input data-t="'+d[1]+'" type="text" inputmode="decimal" value="'+esc(T[d[1]])+'"></div>'}).join("")+'</div><div id="tr"></div><p class="mut">Mean speed = total distance ÷ total time. Apparent slip is a nominal-pitch diagnostic, not propeller efficiency. Gear ratio comes from the Ref tab.</p>';
+ v.oninput=function(e){var k=e.target.dataset.t;if(k){T[k]=e.target.value;tr()}};tr()}
+function tr(){
+ var d=n(T.dist),a=n(T.out),b=n(T.back),rpm=n(T.rpm),p=n(T.pitch),el=document.getElementById("tr");if(!el)return;
+ if(!(d>0&&a>0&&b>0)){el.innerHTML='<div class="ban REVIEW"><b>Enter distance and both times</b></div>';return}
+ var vo=d*3600/a,vb=d*3600/b,m=2*d*3600/(a+b),h='<div class="ban GO"><span class="mut">MEAN SPEED</span><b>'+f(m,2)+' kn</b><span class="mut">Out '+f(vo)+' kn · Back '+f(vb)+' kn · difference '+f(Math.abs(vo-vb))+" kn</span></div>";
+ if(rpm>0){var g=rpm>=R.rpmMin&&rpm<=R.rpmMax;h+='<div class="card '+(g?"GO":"NO")+'"><h4>WOT RPM '+badge(g?"GO":"NO",g?"GO":"NO-GO")+'</h4><span class="mut">Target band '+R.rpmMin+"–"+R.rpmMax+" rpm</span></div>"}
+ if(rpm>0&&p>0){var sl=1-m*K.kn2pitch/(p*rpm/R.ratio);h+='<div class="card"><h4>Apparent slip</h4><span class="chip">'+f(sl*100)+' %</span><span class="mut"> vs '+f(n(S.slip))+" % assumed. Mercury cites 5–25 % as typical.</span></div>"}
+ el.innerHTML=h}
+
+function vesselPhotos(s){
+ return Array.isArray(s.photos)?s.photos.filter(function(p){return p&&typeof p.src==="string"&&/^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(p.src)}).slice(0,6):[];
+}
+function photoCards(items,editable){
+ return '<div class="photo-grid">'+items.map(function(p,i){
+  return '<figure><img src="'+p.src+'" alt="Vessel photo '+(i+1)+'"><figcaption>Vessel photo '+(i+1)+(editable?' <button type="button" data-remove-photo="'+i+'">Remove</button>':'')+'</figcaption></figure>';
+ }).join("")+'</div>';
+}
+function compressPhoto(file){
+ return new Promise(function(resolve,reject){
+  var url=URL.createObjectURL(file),im=new Image();
+  im.onerror=function(){URL.revokeObjectURL(url);reject(new Error("This photo could not be opened. Try taking a new photo or importing a JPEG or PNG."))};
+  im.onload=function(){
+   URL.revokeObjectURL(url);
+   try{
+    var c=document.createElement("canvas"), edge=1200, src;
+    do {
+     var scale=Math.min(1,edge/Math.max(im.naturalWidth,im.naturalHeight));
+     c.width=Math.max(1,Math.round(im.naturalWidth*scale));
+     c.height=Math.max(1,Math.round(im.naturalHeight*scale));
+     var ctx=c.getContext("2d");ctx.fillStyle="#fff";ctx.fillRect(0,0,c.width,c.height);ctx.drawImage(im,0,0,c.width,c.height);
+     src=c.toDataURL("image/jpeg",.76);edge=Math.floor(edge*.72);
+    }while(src.length>140000&&edge>=320);
+    if(!src.startsWith("data:image/jpeg;base64,")||src.length>140000)throw new Error("Could not resize this photo. Try importing a smaller copy.");
+    resolve({src:src});
+   }catch(e){reject(e)}
+  };
+  im.src=url;
+ });
+}
+function photos(v){
+ var owner=S, items=vesselPhotos(owner), busy=false;
+ v.innerHTML='<h3>Vessel photos</h3><p class="mut">Add up to six photos for '+esc(owner.name||"this assessment")+'. Photos stay on this device and appear on the report. Save the assessment to keep them with its record.</p><div class="row"><button class="red" id="take-photo">Take photo</button><button id="import-photo">Import photos</button></div><input type="file" accept="image/*" capture="environment" id="vessel-camera" hidden><input type="file" accept="image/*" multiple id="vessel-library" hidden><p id="photo-status" role="status" class="mut"></p><div id="photo-list"></div>';
+ var status=v.querySelector("#photo-status"), list=v.querySelector("#photo-list");
+ function render(){list.innerHTML=items.length?photoCards(items,true):'<p class="mut">No vessel photos yet.</p>'}
+ function persist(next){
+  var prev=owner.photos;owner.photos=next;
+  if(!save("ax300.cur",owner)){owner.photos=prev;return false}items=next;return true;
+ }
+ async function add(e){
+  var files=Array.from(e.target.files||[]);e.target.value="";
+  if(busy||!files.length)return;
+  busy=true;status.textContent="Preparing photos…";
+  var msg=[];
+  for(var file of files){
+   if(items.length>=6){msg.push("Six-photo limit reached.");break}
+   try{
+    var image=await compressPhoto(file);
+    if(owner!==S)break;
+    if(!persist(items.concat(image))){msg.push("Phone storage is full or unavailable. Photo was not added.");break}
+   }catch(err){msg.push(err.message||"Could not import this photo.")}
+  }
+  busy=false;render();status.textContent=msg.length?msg.join(" "):"Photos added to the current assessment.";
+ }
+ var camera=v.querySelector("#vessel-camera"), library=v.querySelector("#vessel-library");
+ camera.onchange=library.onchange=add;
+ v.querySelector("#take-photo").onclick=function(){if(!busy)camera.click()};
+ v.querySelector("#import-photo").onclick=function(){if(!busy)library.click()};
+ list.onclick=function(e){
+  var i=e.target.dataset.removePhoto;
+  if(i==null||busy)return;
+  if(persist(items.filter(function(_,k){return k!==Number(i)}))){render();status.textContent="Photo removed."}
+  else status.textContent="Could not save the change.";
+ };
+ render();
+}
+function report(v){
+ var r=calc(S),F=fuel(S,r),nm=r.cases[1],mm=maxMass(S,r.hpT),dd=DENS.filter(function(x){return x[0]===S.dens})[0],dn=dd?dd[1]:NaN;
+ var ser=r.el.filter(function(p){return p[0]===nm.cand}).map(function(p){return p[1]}).join(", ");
+ var tp=nm.cand>0?r.shaft*nm.cand*(1-n(S.slip)/100)/K.kn2pitch:NaN;
+ function kv(a){return a.map(function(x){var y=x[1];return'<div class="kv"><span>'+x[0]+"</span><b>"+esc(y===""||y==null||y!==y?"–":y)+"</b></div>"}).join("")}
+ function sec(t,a){return"<h3>"+t+'</h3><div class="kvs">'+kv(a)+"</div>"}
+ var x=function(a,d){return f(n(a),d)};
+ var h='<div class="row noprint"><button class="red" id="sh">Share report</button><button id="pr">Print / Save PDF</button><button id="bk">Edit inputs</button></div><div class="noprint"><label>Send to (email)</label><input id="em" type="email" inputmode="email" placeholder="you@company.com" value="'+esc(load("ax300.mail",""))+'"><p class="mut">Share opens your phone share sheet with the report file attached; choose Mail. Import the file on the Saved tab. Photos are not included in the file.</p></div>';
+ h+='<div class="report-brand"><img class="report-mark" alt="Caudwell Marine" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOkAAAB3AgMAAACbNY9DAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAJUExURT05NT05Nf///+9a7OMAAAABdFJOUwBA5thmAAAAAWJLR0QCZgt8ZAAAAAd0SU1FB+oLGBYGN286AW4AAAKySURBVFjD7ZhLjsMgDIZBKvsuwn04ghfk/lcZwEDMI5MfqtnMjCWqJuKrjR9gqlQv5pyIU5DM0NNDqJ6yJ8TaOUvbJmNG6/ksyGg7d6lBjL5RoBGj7c0cRO8nrLljHcDW9ZYkcfwAsPq8fqVhn1GhwErWQElZ2aaEDFQM1aENayHWzlmCWN+6mVmsjsLK7Fg62MYRPDqyUHhTJM2ERdBo3shiIYqs3mZzOJqKxUKU5g16UTbYN7Do3l6DtMHqkUVDFPPAdCxWgWyg7lkwRCXvZYywCkwzc5C8fIOyvmexCsyrsx3rYPbsWLACeSpXoWBRNKupe85KeMvyrv0KD29x68Xi4S3hFCwtsEnPdabg4S3pK1i3wCa/1jN0Ibw1F7LipRAFtlmgXWHbZgdqcaQmsUKotZLT5T634qp2vlkzORpNk6+Y6OotDbbOM6OXTRbIqqeYySYvq60uWvaUULjuqbrQDU9FSdiOpxQHdiO4LMFNW55io/F74CDwNXCueFftvqeirOzpg9HbJv/L75ByQKc/ItKxbUnn09OrPPgF5a6lJBz3u7nt5XbBUn3JrL1hrWSdkSxFNp6+D6ydsF4XlubsKVnqWae40fmOVRDrepauR8Eqvuxk1uV2dImNCsP4hFUbbApOfNLNXwYga844uMnzd6yfscYbH1j/wHYxymzUGuht9txj2cthymfsd35+YpfjyxkZxg+wuY4yW4o+X8xsYssFIO8QZMU+Fev3juWh5fvK2p9hSdWdcs6ahm3W5Z5YJVjLZtQUDAzlMWf/5Q+JVYqziEov+gqPTh3ppXtgdcxCpd7pk5ilxD7pfTtzFPZVPvWBsfSasAZjj2PCagexho5xvYoO4Hr3TipM5+dgDqJXKWFz+Mrs6wPWrLOmsDHoi6wu683J5p5wKZV9z9gvL5SuqZ+jLOAAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjYtMTEtMjRUMjI6MDY6NTUrMDA6MDBaEXtOAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDI2LTExLTI0VDIyOjA2OjU1KzAwOjAwK0zD8gAAACh0RVh0ZGF0ZTp0aW1lc3RhbXAAMjAyNi0xMS0yNFQyMjowNjo1NSswMDowMHxZ4i0AAAAASUVORK5CYII="></div><div class="card"><h4>AX300 Application Report</h4><b>'+esc(S.name||"Unnamed vessel")+'</b><br><span class="mut">'+esc(S.company||"–")+" · "+esc(S.location||"–")+"<br>Prepared by "+esc(S.prep||"–")+" · "+new Date().toLocaleDateString()+"</span></div>";
+ h+='<div class="ban '+bcls(r)+'"><span class="mut">OVERALL DECISION</span><b>'+esc(r.dec)+'</b><span class="mut">'+esc(r.next)+"</span></div>";
+ h+=sec("Customer requirements",[["Minimum speed",x(S.minKn)+" kn"],["Desired top speed",x(S.topKn)+" kn"],["Desired cruise",x(S.cruKn)+" kn"],["Hull design speed (reference only)",S.designKn?x(S.designKn)+" kn":""],["Vessel use",S.use],["Persons onboard",S.persons],["Fuel capacity",S.fuelCap?x(S.fuelCap,0)+" L":""]]);
+ h+=sec("Vessel design",[["Hull type",S.hullForm],["Running regime",S.regime],["Length overall",S.loa?x(S.loa,2)+" m":""],["Beam",S.beam?x(S.beam,2)+" m":""],["Water density",S.dens+(isFinite(dn)?" ("+dn+" kg/m³)":"")],["Density factor vs S",f(dn/1025,3)],["Normal operating",nm.m>0?nm.m.toLocaleString()+" kg":""],["Full load",r.cases[2].m>0?r.cases[2].m.toLocaleString()+" kg":""]]);
+ h+=sec("Proposed propulsion",[["Installation",S.application+": "+(S.engines||"–")+" × AX300 "+S.leg],["Prop power",f(r.hpT,0)+" hp total ("+R.hp+" each)"],["Gear ratio",R.ratio+":1"],["Rated WOT RPM",R.rpm],["Prop shaft RPM",f(r.shaft,0)],["Assumed slip",x(S.slip)+" %"],["Recommended pitch",nm.cand>0?nm.cand+" in":""],["Candidate series",ser],["Pitch speed",f(tp)+" kn"],["Max listed pitch",f(r.maxPitch,1)+" in → "+f(r.mpSpeed)+" kn"]]);
+ h+="<h3>Performance by loading case</h3><div class=\"tw\"><table><tr><th>Case</th><th>kg</th><th>kn est.</th><th>Req. pitch</th><th>Candidate</th><th>Status</th></tr>"+r.cases.map(function(c){return"<tr><td>"+c.name+"</td><td>"+(c.m>0?c.m.toLocaleString():"–")+"</td><td>"+f(c.kn)+"</td><td>"+f(c.req,2)+"</td><td>"+(c.cand>0?c.cand+" in":"–")+"</td><td>"+esc(c.st)+"</td></tr>"}).join("")+"</table></div>";
+ if(isFinite(mm))h+='<p class="mut">At '+f(r.hpT,0)+" hp this speed model needs about "+Math.round(mm).toLocaleString()+" kg or less to reach the "+x(S.minKn)+" kn minimum.</p>";
+ h+=sec("Fuel and range (planning)",[["Full-load fuel",f(F.full,0)+" L/h ("+f(F.fm,2)+" L/mile)"],["Cruise speed (est.)",f(F.cs)+" kn"],["Cruise fuel",f(F.cf,1)+" L/h ("+f(F.cm,2)+" L/mile)"],["Cruise burn (BSFC basis)",f(F.burn,1)+" L/h"],["Endurance",f(F.end)+" h"],["Range at desired cruise",f(F.rng,0)+" nm"]]);
+ h+=sec("Installation",[["Leg length","AX300 "+S.leg],["Helms",S.helms],["Docking stations",S.dock],["Main harness",S.harness],["Outboard connections",S.conn],["Colour",S.colour],["Modification required",S.mods]]);
+ h+='<h3>Notes and limitations</h3><div class="notes mut"><p>Design estimate: confirm speed and loaded RPM by sea trial. Pitch-speed is not guaranteed vessel speed.</p><p>Catalogue diameter and series screening does not establish AX300 fit, loaded RPM or torque absorption.</p><p>Fuel and range are planning figures. Replace with measured fuel flow and approved weights.</p><p>Final result: record reciprocal runs, speed, loaded RPM, cruise, fitted pitches and ventilation at documented load and trim.</p></div>';
+ h+=crouchTargets(S);
+ var pics=vesselPhotos(S);if(pics.length) h+='<h3>Vessel photos</h3>'+photoCards(pics,false);
+ v.innerHTML=h;
+ document.getElementById("pr").onclick=function(){window.print()};
+ document.getElementById("sh").onclick=shareReport;
+ document.getElementById("bk").onclick=function(){tab="assess";location.hash="assess";draw()}}
+
+function ref(v){
+ var h='<p class="mut">Controlled constants used by every calculation. Edits save on this phone and apply straight away.</p><div class="g">'+REFF.map(function(d){return"<div><label>"+d[0]+" ("+d[2]+')</label><input data-r="'+d[1]+'" type="text" inputmode="decimal" value="'+R[d[1]]+'"></div>'}).join("")+'</div><div class="row"><button id="rr">Reset to workbook defaults</button></div>';
+ h+='<h3>Water density (Plimsoll)</h3><div class="tw"><table><tr><th>Case</th><th>kg/m³</th><th>vs S</th></tr>'+DENS.map(function(d){return"<tr><td>"+d[0]+"</td><td>"+d[1]+"</td><td>"+f(d[1]/1025,3)+"</td></tr>"}).join("")+"</table></div>";
+ h+='<h3>Engine library (~300 hp)</h3><div class="tw"><table><tr><th>Model</th><th>Fuel</th><th>Dry kg</th><th>Ratio</th><th>BSFC</th></tr>'+ENG.map(function(e){return"<tr><td>"+e[0]+"</td><td>"+e[1]+"</td><td>"+e[2]+"</td><td>"+e[3]+"</td><td>"+e[4]+"</td></tr>"}).join("")+"</table></div>";
+ h+='<h3>Method</h3><div class="notes mut"><p>Planing: speed = C × √(total shaft hp ÷ mass in lb).</p><p>Displacement: speed = Vref × (hp ÷ hp ref)^a × (m ref ÷ m)^b, with a = 1/3 and b = 2/9. Semi-displacement needs justified trial exponents. Do not carry a baseline across a change of regime.</p><p>Shaft RPM = engine RPM ÷ gear ratio. Required pitch (in) = speed × 1215.223 ÷ (shaft RPM × (1 − slip)).</p><p>Load per engine: GO up to the caution threshold, CAUTION to the limit, NO-GO to the severe threshold, SEVERE above. Speed is estimated only up to the limit.</p><p>Report fuel: full load = engines × max fuel; cruise speed and fuel use the two factors above. Range uses BSFC, diesel 0.84 kg/L and the fuel reserve.</p><p>Pitch speed screening uses propeller shaft RPM, nominal pitch and assumed slip. Final selection needs approved hub fitment, actual WOT RPM, ECU load, fuel rate and ventilation observation.</p></div>';
+ v.innerHTML=h;
+ v.oninput=function(e){var k=e.target.dataset.r;if(k){var x=n(e.target.value);if(x>=0){R[k]=x;save("ax300.ref",R)}}};
+ document.getElementById("rr").onclick=function(){if(confirm("Reset all constants to workbook defaults?")){R=Object.assign({},DEF);save("ax300.ref",R);ref(v)}}}
+
+function csv(){var L=load("ax300.log",[]),q=function(x){return'"'+String(x).replace(/"/g,'""')+'"'};
+ var rows=[["Saved","Vessel","Customer","Hull","Regime","Decision","Normal kg","Normal kn","Full kg","Full kn","Req pitch in","Candidate in"]];
+ L.forEach(function(e){var r=calc(Object.assign({},BLANK,e.s)),a=r.cases[1],z=r.cases[2];rows.push([e.t,e.s.name,e.s.company,e.s.hullForm||"",e.s.regime||"",e.dec,a.m,f(a.kn,2),z.m,f(z.kn,2),f(a.req,2),a.cand])});
+ return rows.map(function(r){return r.map(q).join(",")}).join("\n")}
+function saved(v){
+ var L=load("ax300.log",[]);
+ var h='<p class="mut">'+L.length+' saved on this phone. Nothing is sent anywhere.</p><div class="row"><button class="red" id="ex">Export CSV</button><button id="cp">Copy CSV</button><button id="cr">Clear all</button></div><div class="row"><label style="cursor:pointer;margin:0;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;color:var(--tx);font-weight:700;letter-spacing:.05em;font-size:13px">Import report<input id="imf" type="file" accept=".json,application/json" style="display:none"></label></div>';
+ L.forEach(function(e,i){var r=calc(Object.assign({},BLANK,e.s));h+='<div class="card '+bcls(r)+'"><h4>'+esc(e.s.name||"Unnamed")+'</h4><span class="mut">'+new Date(e.t).toLocaleString()+"</span><br>"+badge(bcls(r),e.dec)+'<div class="row"><button data-o="'+i+'">Open</button><button data-d="'+i+'">Delete</button></div></div>'});
+ v.innerHTML=h;
+ v.onclick=function(e){var o=e.target.dataset.o,d=e.target.dataset.d;
+  if(o!=null){S=restoreAssessment(L[o].s);save("ax300.cur",S);tab="assess";location.hash="assess";draw()}
+  if(d!=null){L.splice(d,1);save("ax300.log",L);saved(v)}};
+ document.getElementById("ex").onclick=function(){var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv()],{type:"text/csv"}));a.download="ax300-assessments.csv";a.click()};
+ document.getElementById("cp").onclick=function(){navigator.clipboard&&navigator.clipboard.writeText(csv()).then(function(){alert("Copied")})};
+ document.getElementById("cr").onclick=function(){if(confirm("Delete all saved assessments?")){save("ax300.log",[]);saved(v)}};
+ document.getElementById("imf").onchange=function(e){importFile(e.target.files[0],function(){saved(v)})}}
+// ---- Share and import ----
+function keysOK(){var k=[];FIELDS.forEach(function(d){if(d[0]!=="#")k.push(d[1])});return k}
+function summary(r,F){var nm=r.cases[1],fl=r.cases[2];
+ return["AX300 Application Assessment",S.name||"Unnamed vessel",((S.company||"")+" "+(S.location||"")).trim(),"Decision: "+r.dec,r.next,
+ "Normal load: "+f(nm.kn)+" kn, required pitch "+f(nm.req,2)+" in, candidate "+(nm.cand>0?nm.cand+" in":"-"),
+ "Full load: "+f(fl.kn)+" kn, required pitch "+f(fl.req,2)+" in, candidate "+(fl.cand>0?fl.cand+" in":"-"),
+ "Minimum "+f(n(S.minKn))+" kn / top "+f(n(S.topKn))+" kn / cruise "+f(n(S.cruKn))+" kn",
+ "Range at cruise: "+f(F.rng,0)+" nm","Design estimate only. Confirm by sea trial."].join("\n")}
+function payload(r,F){var inp={};keysOK().forEach(function(k){if(S[k]!=null&&S[k]!=="")inp[k]=S[k]});
+ return{app:"ax300-assessment",v:1,created:new Date().toISOString(),inputs:inp,constants:R,
+ results:{decision:r.dec,note:r.next,cases:r.cases.map(function(c){return{name:c.name,kg:c.m,kn:c.kn,reqPitch:c.req,candidate:c.cand,status:c.st}}),fuel:F},summary:summary(r,F)}}
+async function shareReport(){
+ var r=calc(S),F=fuel(S,r),pl=payload(r,F),json=JSON.stringify(pl,null,1),
+ name="AX300_"+(S.name||"vessel").replace(/[^A-Za-z0-9]+/g,"_")+"_"+new Date().toISOString().slice(0,10)+".json",
+ to=(document.getElementById("em").value||"").trim(),subj="AX300 Assessment - "+(S.name||"vessel")+" - "+r.dec;
+ save("ax300.mail",to);
+ try{var fl=new File([json],name,{type:"application/json"});
+  if(navigator.canShare&&navigator.canShare({files:[fl]})){await navigator.share({files:[fl],title:subj,text:pl.summary});return}}catch(e){if(e&&e.name==="AbortError")return}
+ try{var d=window.claude&&await window.claude.use("downloads");
+  if(d)await d.save({filename:name,data:json});
+  else{var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([json],{type:"application/json"}));a.download=name;a.click()}}catch(e){}
+ location.href="mailto:"+encodeURIComponent(to)+"?subject="+encodeURIComponent(subj)+"&body="+encodeURIComponent(pl.summary+"\n\nAttach the downloaded file: "+name)}
+function importFile(file,done){
+ if(!file)return;if(file.size>200000){alert("File too large to be an AX300 report.");return}
+ var rd=new FileReader();rd.onload=function(){
+  try{var p=JSON.parse(rd.result);if(!p||p.app!=="ax300-assessment"||typeof p.inputs!=="object")throw 0;
+   var s=Object.assign({},BLANK),ok=keysOK();
+   Object.keys(p.inputs).forEach(function(k){var x=p.inputs[k];if(ok.indexOf(k)>=0&&(typeof x==="string"||typeof x==="number"))s[k]=String(x).slice(0,200)});
+   var L=load("ax300.log",[]);L.unshift({t:p.created||new Date().toISOString(),s:s,dec:calc(s).dec});save("ax300.log",L);alert("Imported: "+(s.name||"Unnamed vessel"));done()}
+  catch(e){alert("This file is not an AX300 assessment report.")}};
+ rd.readAsText(file)}
+draw();
+
+</script>
+</body>
+</html>
